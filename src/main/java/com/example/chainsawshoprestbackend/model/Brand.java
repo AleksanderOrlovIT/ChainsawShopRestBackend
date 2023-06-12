@@ -9,6 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -37,5 +38,5 @@ public class Brand extends BaseEntity{
     private Byte[] image;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "brand")
-    private Set<Chainsaw> chainsaws;
+    private Set<Chainsaw> chainsaws = new HashSet<>();
 }
