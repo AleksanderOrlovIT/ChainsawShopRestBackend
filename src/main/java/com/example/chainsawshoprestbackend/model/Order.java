@@ -19,14 +19,14 @@ public class Order extends BaseEntity{
 
     private LocalDate date;
 
-    @ElementCollection
-    private Map<String, Integer> chainsawQuantities;
+    @ManyToOne
+    private Customer customer;
 
     @ManyToMany
     @JoinTable(name = "order_chainsaws", joinColumns = @JoinColumn(name = "order_id"),
         inverseJoinColumns = @JoinColumn(name = "chainsaw_id"))
     private Set<Chainsaw> chainsaws = new HashSet<>();
 
-    @ManyToOne
-    private Customer customer;
+    @ElementCollection
+    private Map<String, Integer> chainsawQuantities;
 }
