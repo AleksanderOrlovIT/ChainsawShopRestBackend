@@ -1,11 +1,14 @@
 package com.example.chainsawshoprestbackend.services.impl;
 
 import com.example.chainsawshoprestbackend.model.Brand;
+import com.example.chainsawshoprestbackend.model.Chainsaw;
 import com.example.chainsawshoprestbackend.repositories.BrandRepository;
 import com.example.chainsawshoprestbackend.services.BrandService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -18,8 +21,8 @@ public class BrandServiceImpl implements BrandService {
     }
 
     @Override
-    public Set<Brand> findAll() {
-        return new HashSet<>(brandRepository.findAll());
+    public List<Brand> findAll() {
+        return new ArrayList<>(brandRepository.findAll());
     }
 
     @Override
@@ -40,5 +43,10 @@ public class BrandServiceImpl implements BrandService {
     @Override
     public void deleteById(Long id) {
         brandRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Chainsaw> retrieveChainsawsByBrandId(Long id) {
+        return new ArrayList<>(findById(id).getChainsaws());
     }
 }

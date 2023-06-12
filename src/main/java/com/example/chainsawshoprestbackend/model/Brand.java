@@ -1,6 +1,6 @@
 package com.example.chainsawshoprestbackend.model;
 
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -37,6 +37,7 @@ public class Brand extends BaseEntity{
 
     private Byte[] image;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "brand")
     private Set<Chainsaw> chainsaws = new HashSet<>();
 }
