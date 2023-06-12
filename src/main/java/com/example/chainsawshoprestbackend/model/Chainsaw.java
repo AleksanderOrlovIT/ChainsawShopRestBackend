@@ -15,11 +15,12 @@ import lombok.Setter;
 public class Chainsaw extends BaseEntity{
 
     @Builder
-    public Chainsaw(Long id, String modelName, Integer price, Byte[] image, Brand brand) {
+    public Chainsaw(Long id, String modelName, Integer price, Byte[] image, Integer quantity, Brand brand) {
         super(id);
         this.ModelName = modelName;
         this.price = price;
         this.image = image;
+        this.quantity = quantity;
         this.brand = brand;
     }
 
@@ -28,6 +29,8 @@ public class Chainsaw extends BaseEntity{
     private Integer price;
 
     private Byte[] image;
+
+    private Integer quantity;
 
     @ManyToOne
     private Brand brand;
