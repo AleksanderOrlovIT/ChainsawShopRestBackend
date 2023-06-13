@@ -1,20 +1,22 @@
 package com.example.chainsawshoprestbackend.services.impl;
 
 import com.example.chainsawshoprestbackend.model.Chainsaw;
+import com.example.chainsawshoprestbackend.repositories.BrandRepository;
 import com.example.chainsawshoprestbackend.repositories.ChainsawRepository;
 import com.example.chainsawshoprestbackend.services.ChainsawService;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class ChainsawServiceImpl implements ChainsawService {
 
+
+    private final BrandRepository brandRepository;
     private final ChainsawRepository chainsawRepository;
 
-    public ChainsawServiceImpl(ChainsawRepository chainsawRepository) {
+    public ChainsawServiceImpl(BrandRepository brandRepository, ChainsawRepository chainsawRepository) {
+        this.brandRepository = brandRepository;
         this.chainsawRepository = chainsawRepository;
     }
 
@@ -30,6 +32,8 @@ public class ChainsawServiceImpl implements ChainsawService {
 
     @Override
     public Chainsaw save(Chainsaw chainsaw) {
+        if(chainsaw.getBrand() != null)
+            brandRepository.save(chainsaw.getBrand());
         return chainsawRepository.save(chainsaw);
     }
 

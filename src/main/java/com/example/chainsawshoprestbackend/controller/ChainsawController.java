@@ -39,7 +39,7 @@ public class ChainsawController {
     }
 
     @PostMapping("/chainsaw")
-    public Chainsaw createChainsaw(@PathVariable Long id, @RequestBody Chainsaw chainsaw){
+    public Chainsaw createChainsaw(@RequestBody Chainsaw chainsaw){
         chainsaw.setId(null);
         return chainsawService.save(chainsaw);
     }
