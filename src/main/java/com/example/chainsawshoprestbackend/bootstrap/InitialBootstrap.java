@@ -6,13 +6,9 @@ import com.example.chainsawshoprestbackend.model.Customer;
 import com.example.chainsawshoprestbackend.services.BrandService;
 import com.example.chainsawshoprestbackend.services.ChainsawService;
 import com.example.chainsawshoprestbackend.services.CustomerService;
-import com.example.chainsawshoprestbackend.services.impl.BrandServiceImpl;
-import com.example.chainsawshoprestbackend.services.impl.ChainsawServiceImpl;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 public class InitialBootstrap implements CommandLineRunner {

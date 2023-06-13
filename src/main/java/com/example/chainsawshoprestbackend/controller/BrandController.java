@@ -2,7 +2,6 @@ package com.example.chainsawshoprestbackend.controller;
 
 import com.example.chainsawshoprestbackend.model.Brand;
 import com.example.chainsawshoprestbackend.model.Chainsaw;
-import com.example.chainsawshoprestbackend.repositories.BrandRepository;
 import com.example.chainsawshoprestbackend.services.BrandService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +12,7 @@ import java.util.List;
 public class BrandController {
     private final BrandService brandService;
 
-    public BrandController(BrandService brandService, BrandRepository brandRepository) {
+    public BrandController(BrandService brandService) {
         this.brandService = brandService;
     }
 
@@ -40,11 +39,12 @@ public class BrandController {
 
     @PutMapping("/brand/{id}")
     public Brand updateBrand(@PathVariable Long id, @RequestBody Brand brand){
-        brand.setId(id);
+        if(!brand.getId().equals(id) || brandService.findById(id) == null)
+            return null;
         return brandService.save(brand);
     }
 
-    @PostMapping("/brand/{id}")
+    @PostMapping("/brand")
     public Brand createBrand(@PathVariable Long id, @RequestBody Brand brand){
         brand.setId(null);
         return brandService.save(brand);
