@@ -2,8 +2,10 @@ package com.example.chainsawshoprestbackend.bootstrap;
 
 import com.example.chainsawshoprestbackend.model.Brand;
 import com.example.chainsawshoprestbackend.model.Chainsaw;
+import com.example.chainsawshoprestbackend.model.Customer;
 import com.example.chainsawshoprestbackend.services.BrandService;
 import com.example.chainsawshoprestbackend.services.ChainsawService;
+import com.example.chainsawshoprestbackend.services.CustomerService;
 import com.example.chainsawshoprestbackend.services.impl.BrandServiceImpl;
 import com.example.chainsawshoprestbackend.services.impl.ChainsawServiceImpl;
 import org.springframework.boot.CommandLineRunner;
@@ -17,10 +19,12 @@ public class InitialBootstrap implements CommandLineRunner {
 
     private final BrandService brandService;
     private final ChainsawService chainsawService;
+    private final CustomerService customerService;
 
-    public InitialBootstrap(BrandService brandService, ChainsawService chainsawService) {
+    public InitialBootstrap(BrandService brandService, ChainsawService chainsawService, CustomerService customerService) {
         this.brandService = brandService;
         this.chainsawService = chainsawService;
+        this.customerService = customerService;
     }
 
     @Override
@@ -33,6 +37,11 @@ public class InitialBootstrap implements CommandLineRunner {
                 .price(200).quantity(50).brand(brand1).build();
         Chainsaw metalChainsaw = Chainsaw.builder().modelName("Metal").price(500).quantity(5).brand(brand2).build();
 
+        Customer customer1 = Customer.builder().username("Customer1").firstName("Sasha").lastName("Orlov")
+                .email("Alexanderorlovkh@gmail.com").phone("+123782373").password("Root").build();
+        Customer customer2 = Customer.builder().username("Customer2").firstName("Denys").lastName("Pysotskiy")
+                .email("DenysPysotskiy@gmail.com").phone("+1289172").password("RootRoot").build();
+
         brand1.getChainsaws().add(woodenChainsaw);
         brand1.getChainsaws().add(woodenAndMetalChainsaw);
         brand2.getChainsaws().add(metalChainsaw);
@@ -43,5 +52,8 @@ public class InitialBootstrap implements CommandLineRunner {
         chainsawService.save(woodenChainsaw);
         chainsawService.save(woodenAndMetalChainsaw);
         chainsawService.save(metalChainsaw);
+
+        customerService.save(customer1);
+        customerService.save(customer2);
     }
 }

@@ -22,7 +22,7 @@ public class BrandServiceImpl implements BrandService {
 
     @Override
     public List<Brand> findAll() {
-        return new ArrayList<>(brandRepository.findAll());
+        return brandRepository.findAll();
     }
 
     @Override

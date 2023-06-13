@@ -1,12 +1,14 @@
 package com.example.chainsawshoprestbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -18,7 +20,7 @@ public class Chainsaw extends BaseEntity{
 
     @Builder
     public Chainsaw(Long id, String modelName, Integer price, Byte[] image, Integer quantity, Brand brand,
-                    Set<Order> orders) {
+                    List<Order> orders) {
         super(id);
         this.ModelName = modelName;
         this.price = price;
@@ -40,8 +42,9 @@ public class Chainsaw extends BaseEntity{
     @ManyToOne
     private Brand brand;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "chainsaws")
-    private Set<Order> orders = new HashSet<>();
+    private List<Order> orders = new ArrayList<>();
 }
 
 

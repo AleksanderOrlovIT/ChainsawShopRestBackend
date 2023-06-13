@@ -1,5 +1,6 @@
 package com.example.chainsawshoprestbackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -8,8 +9,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Setter
 @Getter
@@ -19,7 +20,7 @@ public class Customer extends BaseEntity{
 
     @Builder
     public Customer(Long id, String username, String firstName, String lastName, String email, String password,
-                    String phone, Set<Order> orders) {
+                    String phone, List<Order> orders) {
         super(id);
         this.username = username;
         this.firstName = firstName;
@@ -40,10 +41,12 @@ public class Customer extends BaseEntity{
 
     private String email;
 
+    @JsonIgnore
     private String password;
 
     private String phone;
 
+    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
-    private Set<Order> orders = new HashSet<>();
+    private List<Order> orders = new ArrayList<>();
 }

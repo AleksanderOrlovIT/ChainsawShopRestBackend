@@ -9,7 +9,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -19,7 +21,7 @@ import java.util.Set;
 public class Brand extends BaseEntity{
 
     @Builder
-    public Brand(Long id, String name, String url, String email, Set<Chainsaw> chainsaws, Byte[] image) {
+    public Brand(Long id, String name, String url, String email, List<Chainsaw> chainsaws, Byte[] image) {
         super(id);
         this.name = name;
         this.url = url;
@@ -39,5 +41,5 @@ public class Brand extends BaseEntity{
 
     @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "brand")
-    private Set<Chainsaw> chainsaws = new HashSet<>();
+    private List<Chainsaw> chainsaws = new ArrayList<>();
 }
