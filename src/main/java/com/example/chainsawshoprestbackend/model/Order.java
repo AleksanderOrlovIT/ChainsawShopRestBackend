@@ -18,12 +18,14 @@ import java.util.*;
 public class Order extends BaseEntity{
 
     @Builder
-    public Order(Long id, LocalDate date, Customer customer, List<Chainsaw> chainsaws) {
+    public Order(Long id, LocalDate date, Customer customer, List<Chainsaw> chainsaws, Map<Long, Integer> chainsawQuantities) {
         super(id);
         this.date = date;
         this.customer = customer;
         if(chainsaws != null)
             this.chainsaws = chainsaws;
+        if(chainsawQuantities != null)
+            this.chainsawQuantities = chainsawQuantities;
     }
 
     private LocalDate date;
@@ -36,4 +38,7 @@ public class Order extends BaseEntity{
     @JoinTable(name = "order_chainsaws", joinColumns = @JoinColumn(name = "order_id"),
         inverseJoinColumns = @JoinColumn(name = "chainsaw_id"))
     private List<Chainsaw> chainsaws = new ArrayList<>();
+
+    @ElementCollection
+    private Map<Long, Integer> chainsawQuantities = new HashMap<>();
 }

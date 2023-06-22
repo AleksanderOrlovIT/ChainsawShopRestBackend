@@ -7,6 +7,7 @@ import com.example.chainsawshoprestbackend.repositories.OrderRepository;
 import com.example.chainsawshoprestbackend.services.OrderService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -32,19 +33,16 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order save(Order order) {
-        for(Chainsaw chainsaw : order.getChainsaws()){
-            Chainsaw foundChainsaw = chainsawRepository.findById(chainsaw.getId()).orElse(null);
-            if(foundChainsaw == null)
-                return null;
-            if(foundChainsaw.getQuantity() < chainsaw.getQuantity())
-                return null;
-        }
-        for(Chainsaw chainsaw : order.getChainsaws()){
-            chainsawRepository.findById(chainsaw.getId())
-                            .ifPresent(foundChainsaw -> {
-                                    foundChainsaw.setQuantity(foundChainsaw.getQuantity() - chainsaw.getQuantity());
-                                    chainsawRepository.save(foundChainsaw);
-                            });
+        order.setChainsaws(new ArrayList<>());
+        for (Long key : order.getChainsawQuantities().keySet()){
+            Chainsaw foundChainsaw = chainsawRepository.findById(key).orElse(null);
+            if(foundChainsaw != null){
+                if(foundChainsaw.getQuantity() - order.getChainsawQuantities().get(key) >= 0){
+                    foundChainsaw.setQuantity(foundChainsaw.getQuantity() - order.getChainsawQuantities().get(key));
+                    order.getChainsaws().add(foundChainsaw);
+                    chainsawRepository.save(foundChainsaw);
+                }
+            }
         }
         return orderRepository.save(order);
     }
@@ -54,7 +52,8 @@ public class OrderServiceImpl implements OrderService {
         for(Chainsaw chainsaw : order.getChainsaws()){
             chainsawRepository.findById(chainsaw.getId())
                     .ifPresent(foundChainsaw -> {
-                            foundChainsaw.setQuantity(foundChainsaw.getQuantity() + chainsaw.getQuantity());
+                            foundChainsaw.setQuantity(foundChainsaw.getQuantity() +
+                                    order.getChainsawQuantities().get(chainsaw.getId()));
                             chainsawRepository.save(foundChainsaw);
                     });
         }
@@ -67,8 +66,12 @@ public class OrderServiceImpl implements OrderService {
             for (Chainsaw chainsaw : orderRepository.findById(id).get().getChainsaws()) {
                 chainsawRepository.findById(chainsaw.getId())
                         .ifPresent(foundChainsaw -> {
-                            foundChainsaw.setQuantity(foundChainsaw.getQuantity() + chainsaw.getQuantity());
-                            chainsawRepository.save(foundChainsaw);
+                            Order order = orderRepository.findById(id).orElse(null);
+                            if(order != null) {
+                                foundChainsaw.setQuantity(foundChainsaw.getQuantity() +
+                                        order.getChainsawQuantities().get(chainsaw.getId()));
+                                chainsawRepository.save(foundChainsaw);
+                            }
                         });
             }
             orderRepository.deleteById(id);

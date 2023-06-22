@@ -12,9 +12,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
+import java.util.*;
 
 
 @Component
@@ -49,10 +47,10 @@ public class InitialBootstrap implements CommandLineRunner {
                 .email("DenysPysotskiy@gmail.com").phone("+1289172").password("RootRoot").build();
 
         Order order1Customer1 = Order.builder().date(LocalDate.now()).customer(customer1)
-                .chainsaws(Arrays.asList(woodenChainsaw, woodenAndMetalChainsaw)).build();
+                .chainsawQuantities(Map.of(1L, 10, 2L, 20)).build();
 
         Order order1Customer2 = Order.builder().date(LocalDate.now()).customer(customer2)
-                        .chainsaws(Collections.singletonList(metalChainsaw)).build();
+                .chainsawQuantities(Map.of(3L, 3)).build();
 
         brand1.getChainsaws().add(woodenChainsaw);
         brand1.getChainsaws().add(woodenAndMetalChainsaw);
