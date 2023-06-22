@@ -18,25 +18,22 @@ import java.util.*;
 public class Order extends BaseEntity{
 
     @Builder
-    public Order(Long id, LocalDate date, Customer customer, List<Chainsaw> chainsaws, Map<Long, Integer> chainsawQuantities) {
+    public Order(Long id, LocalDate date, Customer customer, List<Chainsaw> chainsaws) {
         super(id);
         this.date = date;
         this.customer = customer;
-        this.chainsaws = chainsaws;
-        this.chainsawQuantities = chainsawQuantities;
+        if(chainsaws != null)
+            this.chainsaws = chainsaws;
     }
 
     private LocalDate date;
 
+    @JsonIgnore
     @ManyToOne
     private Customer customer;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(name = "order_chainsaws", joinColumns = @JoinColumn(name = "order_id"),
         inverseJoinColumns = @JoinColumn(name = "chainsaw_id"))
     private List<Chainsaw> chainsaws = new ArrayList<>();
-
-    @ElementCollection
-    private Map<Long, Integer> chainsawQuantities;
 }

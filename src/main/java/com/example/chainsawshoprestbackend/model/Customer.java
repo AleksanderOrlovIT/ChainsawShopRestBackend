@@ -46,7 +46,6 @@ public class Customer extends BaseEntity{
 
     private String phone;
 
-    @JsonIgnore
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
     private List<Order> orders = new ArrayList<>();
 }
