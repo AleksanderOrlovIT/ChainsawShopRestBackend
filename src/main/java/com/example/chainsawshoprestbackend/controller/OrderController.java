@@ -5,7 +5,9 @@ import com.example.chainsawshoprestbackend.services.CustomerService;
 import com.example.chainsawshoprestbackend.services.OrderService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -30,7 +32,7 @@ public class OrderController {
     @DeleteMapping("/order/{id}")
     public ResponseEntity<Void> deleteOrder(@PathVariable Long id){
         orderService.deleteById(id);
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/order/{id}")
@@ -41,8 +43,15 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public Order createOrder(@RequestBody Order order){
+    public ResponseEntity<Order> createOrder(@RequestBody Order order){
         order.setId(null);
-        return orderService.save(order);
+        Order savedOrder = orderService.save(order);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedOrder.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 }

@@ -4,7 +4,9 @@ import com.example.chainsawshoprestbackend.model.Customer;
 import com.example.chainsawshoprestbackend.services.CustomerService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -28,7 +30,7 @@ public class CustomerController {
     @DeleteMapping("/customer/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable Long id){
         customerService.deleteById(id);
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/customer/{id}")
@@ -39,8 +41,15 @@ public class CustomerController {
     }
 
     @PostMapping("/customer")
-    public Customer createCustomer(@RequestBody Customer customer){
+    public ResponseEntity<Customer> createCustomer(@RequestBody Customer customer){
         customer.setId(null);
-        return customerService.save(customer);
+        Customer savedCustomer = customerService.save(customer);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedCustomer.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 }

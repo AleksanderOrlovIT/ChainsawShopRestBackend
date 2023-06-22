@@ -1,12 +1,9 @@
 package com.example.chainsawshoprestbackend.services.impl;
 
-import com.example.chainsawshoprestbackend.model.Brand;
 import com.example.chainsawshoprestbackend.model.Chainsaw;
 import com.example.chainsawshoprestbackend.model.Order;
 import com.example.chainsawshoprestbackend.repositories.ChainsawRepository;
 import com.example.chainsawshoprestbackend.repositories.OrderRepository;
-import jakarta.servlet.annotation.MultipartConfig;
-import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;

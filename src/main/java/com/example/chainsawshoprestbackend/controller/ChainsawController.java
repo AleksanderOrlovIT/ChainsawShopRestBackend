@@ -4,7 +4,9 @@ import com.example.chainsawshoprestbackend.model.Chainsaw;
 import com.example.chainsawshoprestbackend.services.ChainsawService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -28,7 +30,7 @@ public class ChainsawController {
     @DeleteMapping("/chainsaw/{id}")
     public ResponseEntity<Void> deleteChainsaw(@PathVariable Long id){
         chainsawService.deleteById(id);
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/chainsaw/{id}")
@@ -39,8 +41,15 @@ public class ChainsawController {
     }
 
     @PostMapping("/chainsaw")
-    public Chainsaw createChainsaw(@RequestBody Chainsaw chainsaw){
+    public ResponseEntity<Chainsaw> createChainsaw(@RequestBody Chainsaw chainsaw){
         chainsaw.setId(null);
-        return chainsawService.save(chainsaw);
+        Chainsaw savedChainsaw = chainsawService.save(chainsaw);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedChainsaw.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 }

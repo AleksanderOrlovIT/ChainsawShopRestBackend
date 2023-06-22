@@ -5,10 +5,11 @@ import com.example.chainsawshoprestbackend.model.Chainsaw;
 import org.springframework.hateoas.EntityModel;
 import com.example.chainsawshoprestbackend.services.BrandService;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
-import org.springframework.hateoas.server.mvc.WebMvcLinkBuilderDsl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -46,7 +47,7 @@ public class BrandController {
     @DeleteMapping("/brand/{id}")
     public ResponseEntity<Void> deleteBrand(@PathVariable Long id){
         brandService.deleteById(id);
-        return ResponseEntity.status(200).build();
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/brand/{id}")
@@ -57,8 +58,15 @@ public class BrandController {
     }
 
     @PostMapping("/brand")
-    public Brand createBrand(@RequestBody Brand brand){
+    public ResponseEntity<Brand> createBrand(@RequestBody Brand brand){
         brand.setId(null);
-        return brandService.save(brand);
+        Brand savedBrand = brandService.save(brand);
+
+        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+                .path("/{id}")
+                .buildAndExpand(savedBrand.getId())
+                .toUri();
+
+        return ResponseEntity.created(location).build();
     }
 }
